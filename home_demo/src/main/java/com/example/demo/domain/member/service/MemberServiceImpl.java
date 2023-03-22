@@ -81,12 +81,15 @@ public class MemberServiceImpl implements MemberService {
     public Boolean applyNewPassword(EmailPasswordRequest emailPasswordRequest) {
         Optional<Authentication> maybeAuthentication = authenticationRepository.findByEmail(emailPasswordRequest.getEmail());
         if (!maybeAuthentication.isPresent()){ //인증정보가 존재하지 않을 경우
+            System.out.println("인증정보가없습니다.");
             return false;
         }
+        System.out.println("인증정보가 존재합니다.");
         BasicAuthentication authentication = (BasicAuthentication)maybeAuthentication.get();
+        System.out.println("emailPasswordRequest.getPassword():" + emailPasswordRequest.getPassword());
         authentication.setPassword(emailPasswordRequest.getPassword());
         authenticationRepository.save(authentication);
-
+        System.out.println("비번변경완료");
         return true;
     }
 

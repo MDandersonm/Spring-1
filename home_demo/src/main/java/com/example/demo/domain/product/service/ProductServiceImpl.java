@@ -178,4 +178,21 @@ public class ProductServiceImpl implements ProductService {
         }
         return imageResourceResponseList;//각 응답객체마다 파일path가 적힌 리스트 반환
     }
+
+    @Override
+    public List<AllProductResponse> all() {
+        List<Product> productList = productRepository.findAll();
+        List<AllProductResponse> allProductList = new ArrayList<>();
+
+        for (Product product: productList) {
+            List<ImageResource> imageResourceList = imageResourceRepository.findImagePathByProductId(product.getProductId());
+
+            allProductList.add(new AllProductResponse(
+                    product.getProductId(), product.getProductName(),
+                    product.getWriter(), product.getRegDate(),
+                    imageResourceList));
+        }
+
+        return allProductList;
+    }
 }
